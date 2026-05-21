@@ -1,0 +1,17 @@
+{
+  "name": "pcr-test-demo",
+  "version": "1.0.0",
+  "description": "Lean, production-grade k6 and TypeScript load-testing PoC",
+  "main": "dist/orchestrator.js",
+  "scripts": {
+    "build": "tsc --noEmit && node -e \"require('esbuild').buildSync({ entryPoints: ['src/mock-server.ts', 'src/orchestrator.ts', 'src/load-test.ts'], outdir: 'dist', bundle: true, platform: 'node', format: 'cjs', target: 'node16', external: ['k6'] })\"",
+    "test": "node dist/orchestrator.js",
+    "mock-server": "node dist/mock-server.js"
+  },
+  "devDependencies": {
+    "@types/k6": "^0.54.2",
+    "@types/node": "^22.19.19",
+    "esbuild": "^0.25.0",
+    "typescript": "^5.4.5"
+  }
+}

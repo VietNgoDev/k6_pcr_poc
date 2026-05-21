@@ -1,0 +1,25 @@
+[
+  {
+    "Name": "Get Health Status",
+    "URI": "/public/health",
+    "Method": "GET",
+    "Auth": "NONE"
+  },
+  {
+    "Name": "Fetch System Metrics",
+    "URI": "/admin/metrics",
+    "Method": "GET",
+    "Auth": "ADMIN"
+  },
+  {
+    "Name": "Submit Claim Payment",
+    "URI": "/contract/payment",
+    "Method": "POST",
+    "Auth": "CONTRACT_HOLDER",
+    "Body": {
+      "claimId": "CLM-9902",
+      "amount": 1500.50,
+      "status": "SUBMITTED"
+    }
+  }
+]

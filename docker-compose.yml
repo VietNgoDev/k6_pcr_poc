@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  mock-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+
+  k6-runner:
+    image: grafana/k6:latest
+    depends_on:
+      - mock-api
+    volumes:
+      - ./dist:/app/dist
+      - ./apis_config.json:/app/apis_config.json
+    environment:
+      - TARGET_URL=http://mock-api:8080
+      - CONCURRENT_USERS=5
+      - REQUESTS_PER_USER=30
+    command: run --summary-export=/app/dist/report.json /app/dist/load-test.js
