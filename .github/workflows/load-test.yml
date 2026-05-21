@@ -27,19 +27,21 @@ jobs:
       - name: Transpile Codebase
         run: npm run build
 
-      - name: Run Containerized k6 Load Test Suite
+      - name: Run containerized k6 and parse reports
         run: |
+          set -e
+          echo "Starting docker compose and running k6..."
           docker compose up --build --abort-on-container-exit --exit-code-from k6-runner
 
       - name: Parse metrics and compile reports
         run: |
-          node dist/export.js dist/report.json
+          node dist/export.js /app/dist/report.json
 
       - name: Archive Performance Summary Reports
         uses: actions/upload-artifact@v4
         with:
           name: performance-reports
           path: |
-            performance_summary.txt
-            report.html
-            dist/report.json
+            /app/performance_summary.txt
+            /app/report.html
+            /app/dist/report.json

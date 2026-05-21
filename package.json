@@ -4,7 +4,8 @@
   "description": "Lean, production-grade k6 and TypeScript load-testing PoC",
   "scripts": {
     "build": "tsc --noEmit && node -e \"require('esbuild').buildSync({ entryPoints: ['src/export.ts', 'src/mock-server.ts'], outdir: 'dist', bundle: true, platform: 'node', format: 'cjs', target: 'node16' })\"",
-    "mock-server": "node dist/mock-server.js"
+    "mock-server": "node dist/mock-server.js",
+    "export": "node dist/export.js"
   },
   "devDependencies": {
     "@types/k6": "^0.54.2",
