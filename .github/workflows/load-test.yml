@@ -18,7 +18,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: 'npm'
 
       - name: Install Dependencies
@@ -33,7 +33,7 @@ jobs:
 
       - name: Parse metrics and compile reports
         run: |
-          node dist/orchestrator.js --parse-only dist/report.json
+          node dist/export.js dist/report.json
 
       - name: Archive Performance Summary Reports
         uses: actions/upload-artifact@v4

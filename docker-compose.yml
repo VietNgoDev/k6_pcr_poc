@@ -16,9 +16,8 @@ services:
       - mock-api
     volumes:
       - ./dist:/app/dist
+      - ./src/load-test.ts:/app/src/load-test.ts
       - ./apis_config.json:/app/apis_config.json
-    environment:
-      - TARGET_URL=http://mock-api:8080
-      - CONCURRENT_USERS=5
-      - REQUESTS_PER_USER=30
-    command: run --summary-export=/app/dist/report.json /app/dist/load-test.js
+    env_file:
+      - .env.sample
+    command: run --summary-export=/app/dist/report.json /app/src/load-test.ts

@@ -1,14 +1,7 @@
 import http from 'k6/http';
 import { Trend, Counter } from 'k6/metrics';
 import { SharedArray } from 'k6/data';
-
-interface ApiRoute {
-  Name: string;
-  URI: string;
-  Method: string;
-  Auth: 'ADMIN' | 'CONTRACT_HOLDER' | 'NONE';
-  Body?: any;
-}
+import { ApiRoute } from './types';
 
 // 1. Load APIs Config at Init
 const apis = new SharedArray('apis', function () {
@@ -34,7 +27,7 @@ export const options = {
       executor: 'per-vu-iterations',
       vus: __ENV.CONCURRENT_USERS ? parseInt(__ENV.CONCURRENT_USERS, 10) : 5,
       iterations: __ENV.REQUESTS_PER_USER ? parseInt(__ENV.REQUESTS_PER_USER, 10) : 30,
-      maxDuration: '15m',
+      maxDuration: '30m',
     },
   },
 };
@@ -71,13 +64,21 @@ export default function () {
     // Execute the Target HTTP request
     const url = `${baseUrl}${api.URI}`;
     const payload = api.Body && api.Method !== 'GET' ? JSON.stringify(api.Body) : null;
-    
+
     const startTime = Date.now();
     let res;
     try {
+      // Request method handling
       if (api.Method === 'POST') {
         res = http.post(url, payload, { headers });
+      } else if (api.Method === 'PUT') {
+        res = http.put(url, payload, { headers });
+      } else if (api.Method === 'PATCH') {
+        res = http.patch(url, payload, { headers });
+      } else if (api.Method === 'DELETE') {
+        res = http.delete(url, { headers });
       } else {
+        // Default to GET for other methods
         res = http.get(url, { headers });
       }
       const duration = Date.now() - startTime;

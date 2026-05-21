@@ -2,18 +2,11 @@ import http from 'http';
 import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
+import { ApiRoute } from './types';
 
 const PORT = process.env.PORT ? parseInt(process.env.PORT) : 8080;
 const SECRET = 'lean-pcr-test-key-2026';
 const TOKEN_TTL_MS = 3600000; // 1 hour
-
-interface ApiRoute {
-  Name: string;
-  URI: string;
-  Method: string;
-  Auth: 'ADMIN' | 'CONTRACT_HOLDER' | 'NONE';
-  Body?: any;
-}
 
 // Custom Zero-Dependency Cryptographic Signature Helper
 function generateToken(role: string): string {
